@@ -21,9 +21,9 @@ The work follows the two tasks the coursework set:
 1. **Baseline CNN.** A small stack of convolution and pooling layers with a
    dense head, trained on the prepared images to give a reference point.
 2. **Enhancing the model.** Stronger data augmentation (rotation, shifts,
-   shear, zoom and flips), a lower learning rate with early stopping, and a
-   deeper architecture with batch normalisation, dropout, L2 regularisation and
-   global average pooling.
+   shear, zoom and flips) and a lower learning rate with early stopping. The
+   notebook also defines a deeper architecture with batch normalisation,
+   dropout, L2 regularisation and global average pooling, but never trains it.
 
 The notebook scores the models with accuracy, precision, recall and F1, plus
 confusion matrices to see which herbs get mixed up.
