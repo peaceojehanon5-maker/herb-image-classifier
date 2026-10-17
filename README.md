@@ -3,68 +3,62 @@
 **Peace Ojehanon** · Glasgow, UK · [LinkedIn](https://www.linkedin.com/in/peace-ojehanon) · peaceojehanon5@gmail.com
 
 A convolutional neural network that classifies images of Chinese medicinal
-herbs, built for the **AI & Machine Learning** module of my MSc in Big Data
-Technologies (Glasgow Caledonian University, 2024). The notebook works through
-the full task: load and prepare the data, train a baseline CNN, then try to
-improve it — and, importantly, reports honestly on where the improvements
-helped and where they didn't.
+herbs, built for the **Artificial Intelligence and Machine Learning** module of
+my MSc in Big Data Technologies (Glasgow Caledonian University, 2024). The
+notebook loads and prepares the data, trains a baseline CNN, then works on
+improving it.
 
-## The problem
+## The data
 
-Multi-class image classification on a **modified subset of the
-Chinese-Medicine-163 dataset** — roughly **17,000 images across 11 herb
-classes**. The images are messy in realistic ways: varying resolution, blur,
-watermarks, and uneven numbers of examples per class. That imbalance and noise,
-not the network architecture, turn out to be the hard part.
+A **modified subset of the Chinese-Medicine-163 dataset**: about **17,000
+images across 11 herb classes**, with a similar number of images in each class.
+The images vary a lot in quality, with blur, watermarks and busy backgrounds.
 
 ## Approach
 
-The work is split into the two tasks the coursework asked for:
+The work follows the two tasks the coursework set:
 
-1. **Baseline CNN** — a straightforward convolutional stack (Conv/pooling
-   blocks → dense head) trained on the preprocessed images, to establish a
-   reference point.
-2. **Enhanced model** — adds **data augmentation** (rotation, shifts, flips,
-   zoom) to expand effective training variety and fight overfitting and class
-   imbalance, with adjustments to the architecture and training schedule.
+1. **Baseline CNN.** A small stack of convolution and pooling layers with a
+   dense head, trained on the prepared images to give a reference point.
+2. **Enhancing the model.** Stronger data augmentation (rotation, shifts,
+   shear, zoom and flips), a lower learning rate with early stopping, and a
+   deeper architecture with batch normalisation, dropout, L2 regularisation and
+   global average pooling.
 
-Both are evaluated with accuracy, precision, recall and F1, plus a confusion
-matrix to see *which* herbs get confused with which.
+The notebook scores the models with accuracy, precision, recall and F1, plus
+confusion matrices to see which herbs get mixed up.
 
-## Results — read honestly
+## Results
 
-Training accuracy climbed into the **~78–80%** range over the schedule. The
-held-out evaluation is more sobering: generalisation to unseen images is far
-weaker than training accuracy, which the notebook discusses directly — the
-combination of class imbalance, visually similar herbs and image noise limits
-how far a from-scratch CNN of this size can go on this dataset. The point of
-the write-up is the *analysis* of that gap and what would close it (more/better
-data, transfer learning from a pretrained backbone, class re-balancing), not a
-headline accuracy number. The full metrics, plots and confusion matrices are in
-the notebook.
+Every output is kept in the notebook as it ran. Keras's own validation
+accuracy was about 60% for the baseline and about 70% after retraining with
+stronger augmentation and a lower learning rate.
 
-> This is a coursework exploration, kept as-is. I'd rather show the real
-> evaluation and a clear-eyed discussion than overstate the result.
+One known problem: the scikit-learn reports near the end score close to
+chance, which doesn't match the Keras figures. The validation generator
+shuffles the images, so those reports compare the predictions with the labels
+in a different order. Setting `shuffle=False` on the validation generator would
+fix it.
 
 ## Run it
 
-The notebook was written in Google Colab.
-
 ```
-pip install tensorflow numpy pandas matplotlib scikit-learn pillow
+pip install tensorflow numpy matplotlib scikit-learn pillow
 ```
 
-Open `herb_classifier_cnn.ipynb` in Colab or Jupyter, point the data-loading
-cell at your copy of the dataset, and run top to bottom. A GPU runtime is
-strongly recommended — each epoch on CPU is slow.
+Open `herb_classifier_cnn.ipynb` in Jupyter or Google Colab and point the
+data-loading cell at your copy of the dataset. A few later cells use variable
+names that aren't defined earlier in the notebook (`model`, `aug_train_data`,
+`val_data`), so expect to fix those before it runs from top to bottom. A GPU
+runtime is strongly recommended, as each epoch on a CPU is slow.
 
 ## Tech
 
-Python · TensorFlow / Keras · NumPy · pandas · scikit-learn · Matplotlib.
+Python · TensorFlow / Keras · NumPy · scikit-learn · Matplotlib.
 
 ## Background
 
-Six years across IT operations, ISP/NOC network engineering and data work;
-MSc Big Data Technologies (2025). My day-to-day tooling is Python, SQL and
-BigQuery — this project is where I worked through CNN design, augmentation and
-honest model evaluation hands-on.
+I spent three years in an ISP's network operations centre before my MSc in
+Big Data Technologies (Merit, 2025). For data work I mostly use Python, SQL and
+BigQuery; this project is where I worked through CNN design and data
+augmentation hands-on.
